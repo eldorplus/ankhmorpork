@@ -1,0 +1,34 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    reloader.homer/group: Ankh Cloud
+    reloader.homer/logo: https://raw.githubusercontent.com/loganmarchione/homelab-svg-assets/refs/heads/main/assets/paperlessng.svg
+    reloader.homer/name: Paperless
+    reloader.homer/subtitle: Document management system
+    traefik.ingress.kubernetes.io/router.middlewares: paperless-compress@kubernetescrd
+  labels:
+    app.kubernetes.io/component: webservice
+    app.kubernetes.io/name: paperless
+    probe: enabled
+    reloader.homer/enabled: "true"
+  name: paperless
+  namespace: paperless
+spec:
+  ingressClassName: public
+  rules:
+    - host: papers.krupa.net.pl
+      http:
+        paths:
+          - backend:
+              service:
+                name: paperless
+                port:
+                  name: http
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts:
+        - papers.krupa.net.pl
+      secretName: paperless-tls

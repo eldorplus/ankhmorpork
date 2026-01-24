@@ -1,0 +1,92 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  labels:
+    app.kubernetes.io/component: backup
+    app.kubernetes.io/name: paperless
+  name: paperless-backup
+  namespace: paperless
+spec:
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 2
+  schedule: 36 22 * * *
+  successfulJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/component: backup
+            app.kubernetes.io/name: paperless
+        spec:
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchLabels:
+                      app.kubernetes.io/component: webservice
+                      app.kubernetes.io/name: paperless
+                  topologyKey: kubernetes.io/hostname
+          initContainers:
+            - command:
+                - sh
+                - -c
+                - chmod 0777 /export
+              image: busybox
+              name: permissions
+              volumeMounts:
+                - mountPath: /export
+                  name: backups
+            - command:
+                - sh
+                - -c
+                - find /export -mtime +20 -type f -delete
+              image: busybox
+              name: cleanup
+              volumeMounts:
+                - mountPath: /export
+                  name: backups
+          containers:
+            - args: []
+              #  - --use-folder-prefix
+              #  - --zip
+              #  - --no-color
+              #  - --skip-checks
+              env: []
+              envFrom:
+                - configMapRef:
+                    name: paperless-config
+                - secretRef:
+                    name: paperless-secrets
+                - secretRef:
+                    name: paperless-db
+              image: ghcr.io/community-tooling/oci-images/paperless-export:1.4.0
+              name: backup
+              ports: []
+              resources: {}
+              securityContext:
+                privileged: false
+              volumeMounts:
+                - mountPath: /usr/src/paperless/data
+                  name: data
+                - mountPath: /usr/src/paperless/media
+                  name: media
+                - mountPath: /usr/src/paperless/consume
+                  name: consume
+                - mountPath: /export
+                  name: backups
+          restartPolicy: Never
+          serviceAccountName: paperless
+          volumes:
+            - name: data
+              persistentVolumeClaim:
+                claimName: paperless-data
+            - name: media
+              persistentVolumeClaim:
+                claimName: paperless-media
+            - name: consume
+              persistentVolumeClaim:
+                claimName: consume
+            - name: backups
+              persistentVolumeClaim:
+                claimName: backups

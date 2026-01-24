@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/component: webservice
+    app.kubernetes.io/name: paperless
+  name: paperless-config
+  namespace: paperless
+data:
+  PAPERLESS_BIND_ADDR: "0.0.0.0"
+  PAPERLESS_CONSUMER_POLLING: "60"
+  PAPERLESS_CONSUMER_POLLING_DELAY: "30"
+  PAPERLESS_CONSUMER_POLLING_RETRY_COUNT: "20"
+  PAPERLESS_CORS_ALLOWED_HOSTS: http://paperless-headless.paperless.svc,http://paperless.paperless.svc,https://papers.krupa.net.pl,https://paperless.motmot-prometheus.ts.net
+  PAPERLESS_DB_POOLSIZE: "10"
+  PAPERLESS_DB_READ_CACHE_ENABLED: "false" # using pgBouncer, so no need for read cache
+  PAPERLESS_ENABLE_FLOWER: "true"
+  PAPERLESS_FILENAME_FORMAT: '{{created_year}}/{{correspondent}}/{{asn}} - {{title}}'
+  PAPERLESS_OCR_LANGUAGE: pol+eng
+  PAPERLESS_OCR_LANGUAGES: pol
+  PAPERLESS_OCR_IMAGE_DPI: "300"
+  PAPERLESS_OCR_PAGES: "10"
+  PAPERLESS_DATE_PARSER_LANGUAGES: "pl+en"
+  PAPERLESS_REDIS: redis://redis.paperless.svc:6379
+  PAPERLESS_TIKA_ENABLED: "1"
+  PAPERLESS_TIKA_ENDPOINT: "http://tika.paperless.svc:9998"
+  PAPERLESS_TIKA_GOTENBERG_ENDPOINT: "http://gotenberg.paperless.svc:3000"
+  PAPERLESS_TIME_ZONE: Europe/Warsaw
+  PAPERLESS_URL: https://papers.krupa.net.pl
+  PAPERLESS_WEBSERVER_WORKERS: "1"
+  PAPERLESS_TASK_WORKERS: "1"
+  PAPERLESS_THREADS_PER_WORKER: "2"
+  PAPERLESS_ENABLE_COMPRESSION: "0"
+  PAPERLESS_WORKER_TIMEOUT: "3600"
+  PAPERLESS_CONSUMER_ENABLE_BARCODES: "true"
+  PAPERLESS_CONSUMER_ENABLE_ASN_BARCODE: "true"
+  PAPERLESS_CONSUMER_ASN_BARCODE_PREFIX: "ASN"
+  PAPERLESS_CONSUMER_BARCODE_MAX_PAGES: "1"
+  PAPERLESS_CONSUMER_BARCODE_UPSCALE: "2.0"
+  PAPERLESS_CONSUMER_BARCODE_DPI: "600"
+  PAPERLESS_APPS: "allauth.socialaccount.providers.openid_connect"
+  PAPERLESS_DISABLE_REGULAR_LOGIN: "true"
+  PAPERLESS_REDIRECT_LOGIN_TO_SSO: "true"

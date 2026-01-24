@@ -1,22 +1,23 @@
 # Reference documentation: https://github.com/kubernetes-sigs/external-dns/blob/master/charts/external-dns/values.yaml
 
-txtOwnerId: ankhmorpork.thaum.xyz
+txtOwnerId: thaum.xyz
 txtPrefix: k8s.
 
 policy: sync
 domainFilters:
-  - ankhmorpork.thaum.xyz
+  - thaum.xyz
   - krupa.net.pl
 
 registry: txt
 triggerLoopOnEvent: true
+logLevel: &logLevel debug
 
 serviceMonitor:
   enabled: true
 
 extraArgs:
   - --ignore-ingress-tls-spec
-  - --fqdn-template={{.Name}}.{{.Namespace}}.ankhmorpork.thaum.xyz
+  - --fqdn-template={{`{{`}}.Name{{`}}`}}.{{`{{`}}.Namespace{{`}}`}}.ankhmorpork.thaum.xyz
   - --service-type-filter=LoadBalancer
 
 provider:
@@ -24,8 +25,10 @@ provider:
   webhook:
     image:
       repository: ghcr.io/kashalls/external-dns-unifi-webhook
-      tag: v0.6.0
+      tag: v0.7.0
     env:
+      - name: LOG_LEVEL
+        value: *logLevel
       - name: UNIFI_HOST
         value: https://192.168.1.1 # replace with the address to your UniFi router/controller
       - name: UNIFI_EXTERNAL_CONTROLLER

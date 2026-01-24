@@ -5,10 +5,9 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     ignore-check.kube-linter.io/dangling-service: Check is incompatible with prometheus-operator CRDs
     probe-uri: /-/healthy
-    reloader.homer/group: Administration
-    reloader.homer/logo: https://github.com/cncf/artwork/blob/main/projects/prometheus/icon/color/prometheus-icon-color.png?raw=true
-    reloader.homer/name: prometheus-k8s
-    traefik.ingress.kubernetes.io/router.middlewares: auth-traefik-forward-auth@kubernetescrd
+    # reloader.homer/group: Administration
+    # reloader.homer/logo: https://github.com/cncf/artwork/blob/main/projects/prometheus/icon/color/prometheus-icon-color.png?raw=true
+    # reloader.homer/name: prometheus-k8s
     traefik.ingress.kubernetes.io/service.sticky.cookie: "true"
   labels:
     app.kubernetes.io/component: prometheus
@@ -16,11 +15,11 @@ metadata:
     app.kubernetes.io/name: prometheus
     app.kubernetes.io/part-of: kube-prometheus
     app.kubernetes.io/version: 2.47.1
-    reloader.homer/enabled: "true"
+    # reloader.homer/enabled: "true"
   name: prometheus-k8s
   namespace: monitoring
 spec:
-  ingressClassName: public
+  ingressClassName: private
   rules:
     - host: prometheus.ankhmorpork.thaum.xyz
       http:

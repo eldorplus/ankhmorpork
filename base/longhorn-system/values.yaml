@@ -9,9 +9,9 @@ persistence:
 defaultSettings:
   defaultDataPath: "/var/lib/rancher/longhorn"
   snapshotDataIntegrity: "fast-check"
-  backupTarget: "nfs://192.168.2.29:/nfsshare/longhorn-backups"
+  #backupTarget: "nfs://192.168.40.10:/nfsshare/longhorn-backups"
   upgradeChecker: false
-  concurrentAutomaticEngineUpgradePerNodeLimit: 3
+  concurrentAutomaticEngineUpgradePerNodeLimit: "3"
 
 longhornUI:
   replicas: 1
@@ -35,7 +35,7 @@ ingress:
   enabled: true
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-dns01
-    traefik.ingress.kubernetes.io/router.middlewares: auth-traefik-forward-auth@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: longhorn-system-oidc@kubernetescrd
     traefik.ingress.kubernetes.io/service.sticky.cookie: "true"
   ingressClassName: private
   tls: true

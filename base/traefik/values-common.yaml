@@ -3,7 +3,6 @@
 providers:
   kubernetesCRD:
     enabled: true
-    allowCrossNamespace: true  # Required by current oauth2-proxy setup
   kubernetesIngress:
     publishedService:
       enabled: true
@@ -11,10 +10,6 @@ providers:
 ingressRoute:
   dashboard:
     enabled: true
-
-service:
-  annotations:
-    metallb.universe.tf/address-pool: default
 
 ports:
   web:
@@ -67,3 +62,17 @@ metrics:
       enabled: true
     serviceMonitor:
       honorLabels: true
+
+logs:
+  access:
+    enabled: true
+    format: common
+
+experimental:
+  plugins:
+    bouncer:
+      moduleName: github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin
+      version: v1.3.5
+    oidc:
+      moduleName: github.com/sevensolutions/traefik-oidc-auth
+      version: v0.17.0

@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: mealie
-        image: ghcr.io/mealie-recipes/mealie:v2.5.0
+        image: ghcr.io/mealie-recipes/mealie:v3.5.0
         env:
         - name: ALLOW_SIGNUP
           value: 'false'
@@ -27,6 +27,30 @@ spec:
           value: Europe/Warsaw
         - name: BASE_URL
           value: https://recipes.krupa.net.pl
+        - name: ALLOW_PASSWORD_LOGIN
+          value: 'False'
+        - name: OIDC_AUTO_REDIRECT
+          value: 'True'
+        - name: OIDC_AUTH_ENABLED
+          value: 'True'
+        - name: OIDC_SIGNUP_ENABLED
+          value: 'True'
+        - name: OIDC_CONFIGURATION_URL
+          value: https://login.krupa.net.pl/.well-known/openid-configuration
+        - name: OIDC_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: oidc-client
+              key: clientID
+        - name: OIDC_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: oidc-client
+              key: clientSecret
+        - name: OIDC_ADMIN_GROUP
+          value: admin
+        - name: OIDC_USER_GROUP
+          value: mealie
         - name: DB_ENGINE
           value: postgres
         - name: POSTGRES_SERVER

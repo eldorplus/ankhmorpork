@@ -9,14 +9,14 @@ on:
     branches: [master]
 
 env:
-  golang-version: 1.24.3
+  golang-version: 1.25.6
 
 jobs:
   apps:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+      - uses: actions/setup-go@v6
         with:
           go-version: '${{ env.golang-version }}'
       - run: go install github.com/yannh/kubeconform/cmd/kubeconform@latest
@@ -34,8 +34,8 @@ jobs:
   base:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+      - uses: actions/setup-go@v6
         with:
           go-version: '${{ env.golang-version }}'
       - run: go install github.com/yannh/kubeconform/cmd/kubeconform@latest

@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  labels:
+    app.kubernetes.io/component: webservice
+    app.kubernetes.io/name: paperless
+  name: paperless
+  namespace: paperless
+spec:
+  podMetricsEndpoints:
+    - interval: 30s
+      path: /metrics
+      port: metrics
+      scheme: http
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: webservice
+      app.kubernetes.io/name: paperless

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: karakeep-configuration
+  namespace: karakeep
+data:
+  NEXTAUTH_URL: "https://keep.krupa.net.pl"
+  OCR_LANGS: "pol+eng"
+  OAUTH_WELLKNOWN_URL: "https://login.krupa.net.pl/.well-known/openid-configuration"
+  OAUTH_PROVIDER_NAME: "Pocket ID"
+  OAUTH_ALLOW_DANGEROUS_EMAIL_ACCOUNT_LINKING: "true"
+  DISABLE_PASSWORD_AUTH: "true"

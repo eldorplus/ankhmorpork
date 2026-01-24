@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  labels:
+    app.kubernetes.io/component: webservice
+    app.kubernetes.io/name: paperless
+  name: consume
+  namespace: paperless
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 15Gi
+  nfs:
+    path: /var/nfs/shared/scans/paperless
+    server: 192.168.40.10
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: manual
+  volumeMode: Filesystem
